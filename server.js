@@ -108,31 +108,37 @@ const server = http.createServer((req, res) => {
     });
 
     req.on('end', () => {
+      let entry;
+      const contentType = String(req.headers['content-type'] || '');
+
       try {
-        const entry = JSON.parse(body || '{}');
-
-        const payload = {
-          fullName: String(entry.fullName || '').trim(),
-          email: String(entry.email || '').trim(),
-          attendance: String(entry.attendance || '').trim(),
-          guests: String(entry.guests || '1'),
-          submittedAt: entry.submittedAt || new Date().toISOString()
-        };
-
-        if (!payload.fullName || !payload.email) {
-          res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-          res.end(JSON.stringify({ ok: false, message: 'Full name and email are required.' }));
-          return;
-        }
-
-        appendRsvpEntry(payload);
-
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify({ ok: true, saved: payload }));
+        entry = /application\/json/i.test(contentType)
+          ? JSON.parse(body || '{}')
+          : Object.fromEntries(new URLSearchParams(body || ''));
       } catch (error) {
         res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ ok: false, message: 'Invalid RSVP payload' }));
+        return;
       }
+
+      const payload = {
+        fullName: String(entry.fullName || '').trim(),
+        email: String(entry.email || '').trim(),
+        attendance: String(entry.attendance || '').trim(),
+        guests: String(entry.guests || '1'),
+        submittedAt: entry.submittedAt || new Date().toISOString()
+      };
+
+        if (!payload.fullName || !payload.email) {
+        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ ok: false, message: 'Full name and email are required.' }));
+        return;
+      }
+
+      appendRsvpEntry(payload);
+
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ ok: true, saved: payload }));
     });
 
     return;
