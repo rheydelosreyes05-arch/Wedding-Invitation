@@ -1440,12 +1440,19 @@
       const rsvpEditBtn = document.getElementById("rsvp-edit-btn");
 
       async function saveRsvpEntry(entry) {
+        const params = new URLSearchParams();
+        params.set("fullName", entry.fullName);
+        params.set("email", entry.email);
+        params.set("attendance", entry.attendance);
+        params.set("guests", entry.guests);
+        params.set("submittedAt", entry.submittedAt);
+
         const response = await fetch("/api/rsvp", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
           },
-          body: JSON.stringify(entry)
+          body: params.toString()
         });
 
         if (!response.ok) {
