@@ -2,6 +2,7 @@
 <html lang="en" class="scroll-smooth" style="--primary-color: #6c1e1e; --sage-color: #3d5333; --gold-color: #d4af37; --beige-color: #f9f6f0;"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
     <meta name="theme-color" content="#0b1710">
     <title>Rhey &amp; Ime Wedding Invitation</title>
     <meta name="description" content="Rhey &amp; Ime are getting married on December 26, 2026 at Saint Joseph Parish Church, Sagay City. View the schedule, attire guide, venues and RSVP online.">
@@ -1439,6 +1440,14 @@
       const successTitle = document.getElementById("rsvp-success-title");
       const rsvpEditBtn = document.getElementById("rsvp-edit-btn");
 
+      function getRsvpApiUrl() {
+        const hostParts = (window.location.host || "").match(/^(localhost|127\.0\.0\.1):(\d+)$/);
+        if (hostParts && hostParts[2] !== "3000") {
+          return "http://127.0.0.1:3000/api/rsvp";
+        }
+        return "/api/rsvp";
+      }
+
       async function saveRsvpEntry(entry) {
         const params = new URLSearchParams();
         params.set("fullName", entry.fullName);
@@ -1447,7 +1456,8 @@
         params.set("guests", entry.guests);
         params.set("submittedAt", entry.submittedAt);
 
-        const response = await fetch("/api/rsvp", {
+        console.log("RSVP API target:", getRsvpApiUrl());
+        const response = await fetch(getRsvpApiUrl(), {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded"

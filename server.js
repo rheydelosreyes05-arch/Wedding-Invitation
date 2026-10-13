@@ -97,8 +97,21 @@ function serveStaticFile(filePath, res) {
   });
 }
 
+function applyCors(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
 const server = http.createServer((req, res) => {
   const requestUrl = new URL(req.url, `http://${req.headers.host}`);
+
+  if (requestUrl.pathname === '/api/rsvp' && req.method === 'OPTIONS') {
+    applyCors(res);
+    res.writeHead(204);
+    res.end();
+    return;
+  }
 
   if (requestUrl.pathname === '/api/rsvp' && req.method === 'POST') {
     let body = '';
@@ -108,6 +121,7 @@ const server = http.createServer((req, res) => {
     });
 
     req.on('end', () => {
+      applyCors(res);
       let entry;
       const contentType = String(req.headers['content-type'] || '');
 
@@ -145,6 +159,7 @@ const server = http.createServer((req, res) => {
   }
 
   if (requestUrl.pathname === '/api/rsvp' && req.method === 'GET') {
+    applyCors(res);
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({ entries: readCsvRows() }));
     return;
