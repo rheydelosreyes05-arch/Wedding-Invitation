@@ -1,0 +1,10 @@
+{
+  "liveServer.settings.ignoreFiles": [
+    "**/data/**",
+    "data/**",
+    "**/wedding-rsvp-entries.csv",
+    ".git/**",
+    ".vscode/**",
+    "node_modules/**"
+  ]
+}

@@ -1492,6 +1492,14 @@
         });
       }
 
+      try {
+        const pendingSuccess = sessionStorage.getItem("rsvp_success_message");
+        if (pendingSuccess) {
+          sessionStorage.removeItem("rsvp_success_message");
+          showRsvpFeedback(false, pendingSuccess);
+        }
+      } catch (storageError) {}
+
       if (rsvpForm) {
         rsvpForm.addEventListener("submit", async function (e) {
           e.preventDefault();
@@ -1520,11 +1528,11 @@
           try {
             await saveRsvpEntry({ fullName, email: guestEmail, attendance, guests, submittedAt });
 
-            if (attendance === "attending") {
-              showRsvpFeedback(false, `Dearest <strong>${fullName}</strong>, your response has been saved! We're absolutely thrilled that you and ${guests > 1 ? (guests - 1) + ' guest(s)' : 'yourself'} will join us to celebrate. We'll keep you updated at <strong>${guestEmail}</strong>.`);
-            } else {
-              showRsvpFeedback(false, `Dearest <strong>${fullName}</strong>, thank you for letting us know. We will deeply miss your presence, but we completely understand and send you our warmest love and wishes.`);
-            }
+            const successMessage = attendance === "attending"
+              ? `Dearest <strong>${fullName}</strong>, your response has been saved! We're absolutely thrilled that you and ${guests > 1 ? (guests - 1) + ' guest(s)' : 'yourself'} will join us to celebrate. We'll keep you updated at <strong>${guestEmail}</strong>.`
+              : `Dearest <strong>${fullName}</strong>, thank you for letting us know. We will deeply miss your presence, but we completely understand and send you our warmest love and wishes.`;
+            try { sessionStorage.setItem("rsvp_success_message", successMessage); } catch (storageError) {}
+            showRsvpFeedback(false, successMessage);
           } catch (error) {
             console.error("RSVP submit failed:", error);
             const reason = error && error.serverMessage && error.message
