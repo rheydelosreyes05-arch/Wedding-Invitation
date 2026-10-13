@@ -1,6 +1,6 @@
 const KEY = 'rsvp:entries';
 const CSV_PATH = 'data/wedding-rsvp-entries.csv';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'rheydelosreyes05-arch/RheyIme';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'rheydelosreyes05-arch/Wedding-Invitation';
 const GITHUB_BRANCH = 'main';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
