@@ -4,43 +4,7 @@ const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
-const DATA_DIR = path.join(ROOT, 'data');
-const RSVP_FILE = path.join(DATA_DIR, 'wedding-rsvp-entries.csv');
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || '';
-
-function ensureDataFile() {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-
-  if (!fs.existsSync(RSVP_FILE)) {
-    const header = [
-      'Full Name',
-      'Email',
-      'Attendance',
-      'Number of Guests',
-      'Submitted At'
-    ].join(',');
-    fs.writeFileSync(RSVP_FILE, `${header}\n`, 'utf8');
-  }
-}
-
-function escapeCsv(value) {
-  const stringValue = String(value ?? '');
-  return `"${stringValue.replace(/"/g, '""')}"`;
-}
-
-function appendRsvpEntry(entry) {
-  ensureDataFile();
-
-  const row = [
-    entry.fullName,
-    entry.email,
-    entry.attendance,
-    entry.guests,
-    entry.submittedAt
-  ].map(escapeCsv).join(',');
-
-  fs.appendFileSync(RSVP_FILE, `${row}\n`, 'utf8');
-}
 
 function saveToGoogleSheets(payload) {
   if (!GOOGLE_SCRIPT_URL) return Promise.resolve(false);
@@ -55,23 +19,6 @@ function saveToGoogleSheets(payload) {
       console.error('Google Sheets save failed:', error.message);
       return false;
     });
-}
-
-function readCsvRows() {
-  ensureDataFile();
-
-  const content = fs.readFileSync(RSVP_FILE, 'utf8').trim();
-  if (!content) return [];
-
-  const lines = content.split(/\r?\n/);
-  const splitLine = (line) => line.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map((value) => value.replace(/^"|"$/g, '').replace(/""/g, '"'));
-  const header = splitLine(lines[0]);
-  return lines.slice(1).filter(Boolean).map((line) => {
-    const values = splitLine(line);
-    const row = {};
-    header.forEach((key, index) => { row[key] = values[index]; });
-    return row;
-  });
 }
 
 function serveStaticFile(filePath, res) {
@@ -165,8 +112,6 @@ const server = http.createServer((req, res) => {
         return;
       }
 
-      appendRsvpEntry(payload);
-
       let sheets = 'skipped';
       if (GOOGLE_SCRIPT_URL) {
         sheets = (await saveToGoogleSheets(payload)) ? 'ok' : 'failed';
@@ -182,7 +127,7 @@ const server = http.createServer((req, res) => {
   if (requestUrl.pathname === '/api/rsvp' && req.method === 'GET') {
     applyCors(res);
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify({ entries: readCsvRows() }));
+    res.end(JSON.stringify({ entries: [] }));
     return;
   }
 
@@ -215,9 +160,7 @@ const server = http.createServer((req, res) => {
   });
 });
 
-ensureDataFile();
-
 server.listen(PORT, () => {
   console.log(`Wedding RSVP server running at http://localhost:${PORT}`);
-  console.log(`CSV database: ${RSVP_FILE}`);
+  console.log(`Google Sheets sync: ${GOOGLE_SCRIPT_URL ? 'enabled' : 'disabled'}`);
 });

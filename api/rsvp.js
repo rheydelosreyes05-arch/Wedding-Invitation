@@ -1,8 +1,3 @@
-const KEY = 'rsvp:entries';
-const CSV_PATH = 'data/wedding-rsvp-entries.csv';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'rheydelosreyes05-arch/Wedding-Invitation';
-const GITHUB_BRANCH = 'main';
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || '';
 
 function getRedisConfig() {
