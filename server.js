@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, 'data');
 const RSVP_FILE = path.join(DATA_DIR, 'wedding-rsvp-entries.csv');
+const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || '';
 
 function ensureDataFile() {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -39,6 +40,21 @@ function appendRsvpEntry(entry) {
   ].map(escapeCsv).join(',');
 
   fs.appendFileSync(RSVP_FILE, `${row}\n`, 'utf8');
+}
+
+function saveToGoogleSheets(payload) {
+  if (!GOOGLE_SCRIPT_URL) return Promise.resolve(false);
+
+  return fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(response => response.ok)
+    .catch(error => {
+      console.error('Google Sheets save failed:', error.message);
+      return false;
+    });
 }
 
 function readCsvRows() {
@@ -120,7 +136,7 @@ const server = http.createServer((req, res) => {
       body += chunk;
     });
 
-    req.on('end', () => {
+    req.on('end', async () => {
       applyCors(res);
       let entry;
       const contentType = String(req.headers['content-type'] || '');
@@ -151,8 +167,13 @@ const server = http.createServer((req, res) => {
 
       appendRsvpEntry(payload);
 
+      let sheets = 'skipped';
+      if (GOOGLE_SCRIPT_URL) {
+        sheets = (await saveToGoogleSheets(payload)) ? 'ok' : 'failed';
+      }
+
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ ok: true, saved: payload }));
+      res.end(JSON.stringify({ ok: true, saved: payload, googleSheets: sheets }));
     });
 
     return;

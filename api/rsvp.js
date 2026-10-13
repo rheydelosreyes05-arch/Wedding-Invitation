@@ -3,6 +3,7 @@ const CSV_PATH = 'data/wedding-rsvp-entries.csv';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'rheydelosreyes05-arch/Wedding-Invitation';
 const GITHUB_BRANCH = 'main';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || '';
 
 function getRedisConfig() {
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
@@ -176,6 +177,24 @@ async function syncCsvToGitHub(entries) {
   }
 }
 
+async function saveToGoogleSheets(entry) {
+  if (!GOOGLE_SCRIPT_URL) return;
+
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(entry)
+    });
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.message || `Google Sheets save failed (${response.status})`);
+    }
+  } catch (error) {
+    console.error('Google Sheets save failed:', error.message);
+  }
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -217,6 +236,7 @@ module.exports = async (req, res) => {
       await syncCsvToGitHub(entries).catch((error) => {
         console.error('GitHub sync failed (entry still saved):', error.message);
       });
+      await saveToGoogleSheets(entry);
 
       res.status(200).json({ ok: true, saved: entry });
     } catch (error) {
