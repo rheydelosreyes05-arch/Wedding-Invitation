@@ -47,6 +47,7 @@ function normalizeEntry(body) {
     email: String(entry.email || '').trim(),
     attendance: String(entry.attendance || '').trim(),
     guests: String(entry.guests || '1'),
+    guest2Name: String(entry.guest2Name || '').trim(),
     submittedAt: entry.submittedAt || new Date().toISOString()
   };
 }
@@ -66,11 +67,11 @@ async function readAllEntries(config) {
 }
 
 function entriesToCsv(entries) {
-  const header = ['Full Name', 'Email', 'Attendance', 'Number of Guests', 'Submitted At'];
+  const header = ['Full Name', 'Email', 'Attendance', 'Number of Guests', 'Second Guest Name', 'Submitted At'];
   const escape = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`;
 
   const rows = entries.map((entry) =>
-    [entry.fullName, entry.email, entry.attendance, entry.guests, entry.submittedAt]
+    [entry.fullName, entry.email, entry.attendance, entry.guests, entry.guest2Name || '', entry.submittedAt]
       .map(escape)
       .join(',')
   );
@@ -99,6 +100,7 @@ function parseCsvRows(csv) {
         email: row['Email'],
         attendance: row['Attendance'],
         guests: row['Number of Guests'],
+        guest2Name: row['Second Guest Name'] || '',
         submittedAt: row['Submitted At']
       };
     });
