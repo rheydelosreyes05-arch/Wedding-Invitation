@@ -1449,7 +1449,9 @@
         });
 
         if (!response.ok) {
-          let message = "Unable to save RSVP entry";
+          let message = response.status === 400
+            ? "Please fill in all required fields."
+            : "Unable to save RSVP entry";
           try {
             const data = await response.json();
             if (data && data.message) message = data.message;
@@ -1479,6 +1481,12 @@
 
           const fullName = document.getElementById("fullName").value.trim();
           const guestEmail = document.getElementById("email").value.trim();
+
+          if (!fullName || !guestEmail) {
+            showRsvpFeedback(true, "Please fill in both your name and your email address.");
+            return;
+          }
+
           const attendanceRadio = document.querySelector('input[name="attendance"]:checked');
           const attendance = attendanceRadio ? attendanceRadio.value : "attending";
           const guests = guestsSelect ? guestsSelect.value : "1";
