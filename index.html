@@ -1449,7 +1449,14 @@
         });
 
         if (!response.ok) {
-          throw new Error("Unable to save RSVP entry");
+          let message = "Unable to save RSVP entry";
+          try {
+            const data = await response.json();
+            if (data && data.message) message = data.message;
+          } catch (parseError) {}
+          const error = new Error(message);
+          error.serverMessage = true;
+          throw error;
         }
 
         return await response.json();
@@ -1472,7 +1479,8 @@
 
           const fullName = document.getElementById("fullName").value.trim();
           const guestEmail = document.getElementById("email").value.trim();
-          const attendance = document.querySelector('input[name="attendance"]:checked').value;
+          const attendanceRadio = document.querySelector('input[name="attendance"]:checked');
+          const attendance = attendanceRadio ? attendanceRadio.value : "attending";
           const guests = guestsSelect ? guestsSelect.value : "1";
           const submittedAt = new Date().toISOString();
           const submitBtn = rsvpForm.querySelector('button[type="submit"]');
@@ -1493,7 +1501,11 @@
               showRsvpFeedback(false, `Dearest <strong>${fullName}</strong>, thank you for letting us know. We will deeply miss your presence, but we completely understand and send you our warmest love and wishes.`);
             }
           } catch (error) {
-            showRsvpFeedback(true, "We couldn't save your RSVP right now. Please check your connection and try again, or message us at <strong>09671771177</strong>.");
+            console.error("RSVP submit failed:", error);
+            const reason = error && error.serverMessage && error.message
+              ? error.message
+              : "We couldn't save your RSVP right now. Please check your connection and try again, or message us at <strong>09671771177</strong>.";
+            showRsvpFeedback(true, reason);
           } finally {
             if (submitBtn) {
               submitBtn.disabled = false;
