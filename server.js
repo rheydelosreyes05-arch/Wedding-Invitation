@@ -103,6 +103,7 @@ const server = http.createServer((req, res) => {
         email: String(entry.email || '').trim(),
         attendance: String(entry.attendance || '').trim(),
         guests: String(entry.guests || '1'),
+        guest2Name: String(entry.guest2Name || '').trim(),
         submittedAt: entry.submittedAt || new Date().toISOString()
       };
 
