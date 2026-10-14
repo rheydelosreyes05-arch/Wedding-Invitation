@@ -1597,10 +1597,18 @@
       if (guestsSelect) guestsSelect.addEventListener("change", syncGuest2Block);
 
       // Background music: the couple's chosen track starts automatically the
-      // moment the envelope is opened, and the floating button toggles it.
+      // moment the envelope is opened.
       const bgMusic = document.getElementById("bg-music");
       if (bgMusic) {
         bgMusic.volume = 0.55;
+      }
+
+      function startMusic() {
+        if (!bgMusic) return;
+        const attempt = bgMusic.play();
+        if (attempt && attempt.catch) {
+          attempt.catch(function () { /* autoplay blocked until the next gesture */ });
+        }
       }
 
       // Falling roses background video (replaces the petal particle simulation)
