@@ -796,10 +796,6 @@
         .sponsors-orbit-stage { min-height: 360px; }
         .sponsor-orbit-item { font-size: 16px; }
       }
-      @media (prefers-reduced-motion: reduce) {
-        .sponsors-orbit-stage { cursor: default; }
-      }
-
       /* Fallback for browsers without :has() so overscroll is beige, not black */
       html.is-open { background: #f9f6f0; }
 
@@ -1101,10 +1097,6 @@
         ));
       }
 
-      function prefersReducedMotion() {
-        return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-      }
-
       function renderSponsorsOrbit() {
         const stage = document.getElementById("sponsors-orbit-stage");
         if (!stage) return;
@@ -1243,13 +1235,11 @@
       }
 
       function startSponsorsOrbit() {
-        if (prefersReducedMotion()) {
-          // still composition: the ring rests with one name held in the centre
-          sponsorsOrbitProgress = 0.5;
-          sponsorsOrbitLift = 1;
-          positionSponsorsOrbit();
-          return;
-        }
+        // The showcase always runs: the ring travelling and each name gliding
+        // into the light is the whole point of this section, so a device that
+        // reports `prefers-reduced-motion: reduce` must not freeze it into a
+        // still ring. (Previously that preference parked one name in the centre
+        // and left the ring motionless, which read as "not rotating".)
         if (!sponsorsOrbitRaf) {
           sponsorsOrbitLast = 0;
           sponsorsOrbitRaf = requestAnimationFrame(sponsorsOrbitFrame);
@@ -1323,7 +1313,6 @@
         let lastProgress = 0;
 
         stage.addEventListener("pointerdown", (e) => {
-          if (prefersReducedMotion()) return;
           sponsorsOrbitDragging = true;
           sponsorsOrbitPaused = false;
           sponsorsOrbitVelocity = 0;
