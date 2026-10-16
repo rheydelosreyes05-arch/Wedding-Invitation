@@ -150,10 +150,8 @@
       body.export-mode .hidden-on-export {
         display: none !important;
       }
-      /* Never let the mobile "Show all" collapse hide sponsors in an export */
-      body.export-mode .sponsor-card.sponsor-hidden {
-        display: flex !important;
-      }
+      /* Exports capture a frozen frame of the projection (rotation pauses in JS) */
+      body.export-mode .sponsors-orbit-stage { cursor: default; }
 
       html {
         scroll-behavior: smooth;
@@ -614,7 +612,9 @@
       #audio-visualizer.hidden { display: none; }
 
       /* ------------------------------------------------------------------
-         Principal Sponsors — premium, mobile-first presentation
+         Principal Sponsors — premium 3D circular name projection
+         Names orbit an invisible elliptical ring; type is projected in
+         depth (scale + glow + opacity) with no blocks or cubes.
          ------------------------------------------------------------------ */
       .sponsors-heading-rule {
         width: 44px;
@@ -622,56 +622,182 @@
         background: linear-gradient(90deg, transparent, #d4af37, transparent);
         margin: 12px auto 18px;
       }
-      .sponsor-card {
+
+      /* The projection chamber */
+      .sponsors-orbit {
         position: relative;
+        margin: 0 auto;
+        max-width: 58rem;
+        padding: 26px 12px 30px;
+        border-radius: 26px;
+        overflow: hidden;
+        isolation: isolate;
+        border: 1px solid rgba(212, 175, 55, 0.32);
+        background:
+          radial-gradient(110% 82% at 50% 3%, rgba(212, 175, 55, 0.20), rgba(212, 175, 55, 0) 58%),
+          radial-gradient(125% 95% at 50% 118%, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0) 62%),
+          linear-gradient(168deg, #34202a 0%, #241419 44%, #140b0f 100%);
+        box-shadow:
+          0 34px 64px -40px rgba(44, 48, 46, 0.78),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+      .sponsors-orbit::before {
+        /* fine gold hairline inset frame */
+        content: "";
+        position: absolute;
+        inset: 7px;
+        border-radius: 20px;
+        border: 1px solid rgba(212, 175, 55, 0.16);
+        pointer-events: none;
+        z-index: 3;
+      }
+      .sponsors-orbit-aura {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: min(74%, 560px);
+        aspect-ratio: 2 / 1;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(closest-side, rgba(212, 175, 55, 0.24), rgba(212, 175, 55, 0) 74%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* The stage: names are positioned in 3D from JS — perspective is
+         computed by hand (scale + parallax) so every frame stays consistent. */
+      .sponsors-orbit-stage {
+        position: relative;
+        z-index: 1;
+        margin: 0 auto;
+        min-height: 252px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        gap: 8px 16px;
+        touch-action: pan-y;
+        cursor: grab;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .sponsors-orbit-stage.is-live {
+        display: block;
+        /* soft edge fade so orbiting names dissolve into the dark instead of
+           being hard-clipped as they pass the silhouette */
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+      }
+      .sponsors-orbit-stage.is-dragging { cursor: grabbing; }
+
+      .sponsor-orbit-item {
+        font-family: 'Playfair Display', serif;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 1.25;
+        letter-spacing: 0.06em;
+        color: #f7f0e3;
+        white-space: nowrap;
+        text-shadow: 0 0 15px rgba(212, 175, 55, 0.6), 0 1px 1px rgba(0, 0, 0, 0.6);
+      }
+      .sponsors-orbit-stage.is-live .sponsor-orbit-item {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        transform-origin: 50% 50%;
+        will-change: transform, opacity;
+      }
+      /* brightest name gets a warmer highlight as it crosses the front */
+      .sponsors-orbit-stage.is-live .sponsor-orbit-item.is-front {
+        color: #fffaf0;
+        text-shadow: 0 0 22px rgba(233, 200, 120, 0.85), 0 0 4px rgba(212, 175, 55, 0.9);
+      }
+
+      .sponsors-orbit-hint {
+        margin: 14px auto 0;
+        text-align: center;
+        font-size: 10.5px;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+        color: rgba(61, 83, 51, 0.6);
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 58px;
-        padding: 12px 8px;
-        background: linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
-        border: 1px solid rgba(212, 175, 55, 0.28);
-        border-radius: 14px;
-        box-shadow: 0 1px 2px rgba(44, 48, 46, 0.04);
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        gap: 8px;
       }
-      .sponsor-card::before {
-        /* small gold lozenge sitting on the top edge */
-        content: "";
-        position: absolute;
-        top: -3px;
-        left: 50%;
-        width: 6px;
-        height: 6px;
-        margin-left: -3px;
-        background: #d4af37;
-        border: 2px solid #fff;
+      .sponsors-orbit-hint-dot {
+        width: 5px;
+        height: 5px;
         border-radius: 50%;
-        opacity: 0.9;
+        background: #d4af37;
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.85);
       }
-      .sponsor-card p {
-        font-family: 'Playfair Display', serif;
-        font-size: 12.5px;
-        line-height: 1.3;
-        letter-spacing: 0.02em;
-        color: #2c302e;
-        text-wrap: balance;
-      }
-      .sponsor-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(212, 175, 55, 0.75);
-        box-shadow: 0 10px 22px -16px rgba(107, 29, 47, 0.55);
-      }
-      @media (min-width: 640px) {
-        .sponsor-card { min-height: 68px; padding: 16px 12px; border-radius: 16px; }
-        .sponsor-card p { font-size: 14px; }
-      }
-      .sponsor-hidden { display: none !important; }
-      #sponsors-toggle {
+
+      .sponsors-list-btn {
         -webkit-tap-highlight-color: transparent;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #6b1d2f;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(212, 175, 55, 0.45);
+        border-radius: 999px;
+        padding: 9px 20px;
+        cursor: pointer;
         transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
       }
-      #sponsors-toggle:active { transform: translateY(1px); }
+      .sponsors-list-btn:hover { background: #6b1d2f; color: #f7f0e3; border-color: #6b1d2f; }
+      .sponsors-list-btn:active { transform: translateY(1px); }
+
+      .sponsors-list {
+        list-style: none;
+        margin: 16px auto 0;
+        padding: 0;
+        max-width: 46rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2px 26px;
+      }
+      .sponsors-list[hidden] { display: none; }
+      .sponsors-list li {
+        font-family: 'Playfair Display', serif;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        color: #2c302e;
+        text-align: center;
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.16);
+      }
+
+      @media (max-width: 767px) {
+        /* break out of the card's 32px gutter so the ring has room to breathe,
+           leaving an 8px gap inside the card instead of wasting 32px */
+        .sponsors-orbit {
+          margin-left: -24px;
+          margin-right: -24px;
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+      }
+      @media (min-width: 640px) {
+        .sponsors-orbit { padding: 34px 24px 38px; border-radius: 30px; }
+        .sponsors-orbit-stage { min-height: 300px; }
+        .sponsor-orbit-item { font-size: 15px; letter-spacing: 0.07em; }
+        .sponsors-list { grid-template-columns: 1fr 1fr; }
+      }
+      @media (min-width: 1024px) {
+        .sponsors-orbit-stage { min-height: 360px; }
+        .sponsor-orbit-item { font-size: 16px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .sponsors-orbit-stage { cursor: default; }
+      }
 
       /* Fallback for browsers without :has() so overscroll is beige, not black */
       html.is-open { background: #f9f6f0; }
@@ -771,7 +897,7 @@
         </button><button type="button" id="tab-btn-secondary" class="tab-btn px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest bg-white border border-[#D4AF37]/30 text-[#3D5333] hover:bg-[#3D5333]/5 transition-all cursor-pointer">
           Secondary Sponsors
         </button></div><!-- Tab Content Area --><div class="bg-white border border-[#D4AF37]/20 rounded-3xl p-8 md:p-12 shadow-sm shadow-[#D4AF37]/5 min-h-[400px]"><!-- Tab 1: Parents & Sponsors --><div id="tab-content-parents" class="tab-panel space-y-12 transition-opacity duration-300"><div class="grid md:grid-cols-2 gap-10"><!-- Parents of the Groom --><div class="border border-[#D4AF37]/15 p-6 rounded-xl bg-[#3D5333]/5"><h4 class="font-serif-elegant text-lg italic text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-4 font-semibold">Parents of the Groom</h4><p class="text-sm font-semibold text-[#2C302E]">Mr. Renante Delos Reyes</p><p class="text-xs text-[#2C302E]/60 mb-3">Father of the Groom</p><p class="text-sm font-semibold text-[#2C302E]">Mrs. Ma. Christina Delos Reyes</p><p class="text-xs text-[#2C302E]/60">Mother of the Groom</p></div><!-- Parents of the Bride --><div class="border border-[#D4AF37]/15 p-6 rounded-xl bg-[#3D5333]/5"><h4 class="font-serif-elegant text-lg italic text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-4 font-semibold">Parents of the Bride</h4><p class="text-sm font-semibold text-[#2C302E]">Mr. Rene Sibug</p><p class="text-xs text-[#2C302E]/60 mb-3">Uncle of the Bride</p><p class="text-sm font-semibold text-[#2C302E]">Mrs. Emelita Catague</p><p class="text-xs text-[#2C302E]/60 mb-4">Mother of the Bride</p><p class="text-[10px] italic text-[#6B1D2F] bg-[#6B1D2F]/5 px-3 py-2 rounded">
-                🕊️ In loving memory of the Bride's late father: <strong>Nestor Catague</strong></p></div></div><!-- Principal Sponsors --><div><h4 class="font-serif-elegant text-2xl font-light text-center text-[#6B1D2F]">Principal Sponsors</h4><div class="sponsors-heading-rule" aria-hidden="true"></div><div id="sponsors-grid" class="sponsors-grid grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-w-4xl mx-auto text-center" role="list"><div class="sponsor-card" role="listitem"><p>MR. CHRISTIAN ABONG SR.</p></div><div class="sponsor-card" role="listitem"><p>DR. IVY ABOY</p></div><div class="sponsor-card" role="listitem"><p>DR. ARJAY ALVARADO</p></div><div class="sponsor-card" role="listitem"><p>MRS. ANN ARZAGA</p></div><div class="sponsor-card" role="listitem"><p>MRS. LESLIE ARZAGA</p></div><div class="sponsor-card" role="listitem"><p>DR. JOE BASANTA</p></div><div class="sponsor-card" role="listitem"><p>ATTY. RYAN BONGHANOY</p></div><div class="sponsor-card" role="listitem"><p>MR. REGULUS BRILLANTES</p></div><div class="sponsor-card" role="listitem"><p>MS. PRECIOUS JANE CAÑAL, MPA</p></div><div class="sponsor-card" role="listitem"><p>MRS. GINA DATU</p></div><div class="sponsor-card" role="listitem"><p>MRS. HONEYLET FAUSTORILLA</p></div><div class="sponsor-card" role="listitem"><p>DR. RENANTE EGCAS</p></div><div class="sponsor-card" role="listitem"><p>HON. JEFFREY FERRER</p></div><div class="sponsor-card" role="listitem"><p>DR. MOFE GANTES</p></div><div class="sponsor-card" role="listitem"><p>DR. JOSE LIZAEL LAMPINEZ</p></div><div class="sponsor-card" role="listitem"><p>DR. SAMSON LAUSA</p></div><div class="sponsor-card" role="listitem"><p>DR. ADYBIER LOBATON</p></div><div class="sponsor-card" role="listitem"><p>MRS. ANGELIE MAHILUM</p></div><div class="sponsor-card" role="listitem"><p>MRS. ZARANITA MALABOR</p></div><div class="sponsor-card" role="listitem"><p>DR. AIREEN JANE MARTORILLAS</p></div><div class="sponsor-card" role="listitem"><p>MRS. ELLEN MAURICIO</p></div><div class="sponsor-card" role="listitem"><p>MRS. RIZA PALACIOS</p></div><div class="sponsor-card" role="listitem"><p>MR. DOROTEO RECUELO</p></div><div class="sponsor-card" role="listitem"><p>MR. TRISTAN TUGOT</p></div><div class="sponsor-card" role="listitem"><p>MRS. ARLENE VISITACION</p></div></div><div class="text-center mt-3 sm:mt-4 md:hidden hidden-on-export"><button type="button" id="sponsors-toggle" aria-expanded="false" class="text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-[#6B1D2F] border border-[#D4AF37]/40 px-5 py-2 rounded-full bg-white/90 cursor-pointer">Show all <span id="sponsors-count">25</span> sponsors</button></div></div></div><!-- Tab 2: Main Entourage --><div id="tab-content-entourage-main" class="tab-panel hidden space-y-12 transition-opacity duration-300"><div class="grid md:grid-cols-2 gap-10"><!-- Best Man & Groom's Men --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Groom's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Best Man</p><p class="text-sm font-bold text-[#2C302E]">MR. HANNS VINZENZ GANTES</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Groomsmen</p><ul id="groomsmen-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MR. Nick Butch Bustillo</li><li>• MR. Loui Jay Guacen</li><li>• MR. Renz Beaver Layco</li><li>• MR. Jose Louie Bañadera</li><li>• MR. Carmelo Lobaton</li><li>• MR. Jules Emmanuel Malabor</li><li>• MR. Bruce De Ocampo</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Groomsman</p><p class="text-sm font-semibold text-[#2C302E]">Cynereck Ayco</p></div></div></div><!-- Bride's Side --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Bride's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Man of Honor</p><p class="text-sm font-bold text-[#2C302E]">MR. Moises Bolanio</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Bridesmaids</p><ul id="bridesmaids-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MS. Raiza Muriel Pineda</li><li>• MS. Sophia Ysabel Lee</li><li>• MS. Jannielle Mei Balino</li><li>• MS. Hilary Shane Sanding</li><li>• MS. Reylyn Marie Tuna</li><li>• MS. Abby Peñacuba</li><li>• MS. Coleen Torregue</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Bridesmaid</p><p class="text-sm font-semibold text-[#2C302E]">Ma. Amelia Reene Delos Reyes</p></div></div></div></div></div><!-- Tab 3: Secondary Sponsors --><div id="tab-content-secondary" class="tab-panel hidden space-y-8 transition-opacity duration-300"><div class="grid md:grid-cols-3 gap-6"><!-- Veil, Cord, Candle --><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Veil Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Petrex Saan</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Renalyn Saan</p><p class="text-xs text-gray-400">To clothe the couple in harmony and unity</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Cord Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Adrian Tianero</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Ranjelie Charizz Tianero</p><p class="text-xs text-gray-400">To bind the couple in marriage bond and loyalty</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Candle Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Junjo Brian Ybarrita</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Lyra Ybarrita</p><p class="text-xs text-gray-400">To light their path and guide their home</p></div></div><div class="grid md:grid-cols-2 gap-6 mt-8"><!-- Bearers --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Honorary Bearers</h5><div class="grid grid-cols-3 gap-4"><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Coin Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Jose Ramon Arzaga</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Bible Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Castiel John Saan</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Ring Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Marcus Khiel Belarmino</p></div></div></div><!-- Flower Girls --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Flower Girls</h5><div id="flowergirls-grid" class="grid grid-cols-2 gap-4"><div><p class="text-sm font-semibold text-[#2C302E]">Astrid Elizabeth Danielle Ybarrita</p><span class="text-[10px] text-gray-400">Flower Girl</span></div><div><p class="text-sm font-semibold text-[#2C302E]">Mary Belle Catague</p><span class="text-[10px] text-gray-400">Flower Girl</span></div></div></div></div></div></div></section><section id="attire" class="bg-white py-24 px-6 border-y border-[#D4AF37]/10"><div class="max-w-6xl mx-auto"><div class="text-center mb-12"><p class="text-xs uppercase tracking-[0.25em] font-semibold text-[#3D5333] mb-2">Style Guidelines</p><h2 class="font-serif-elegant text-4xl md:text-5xl font-light tracking-wide text-[#6B1D2F]">Dress Code &amp; Colors</h2><div class="w-12 h-px bg-[#D4AF37] mx-auto mt-4"></div><p class="text-sm text-[#2C302E]/70 max-w-lg mx-auto mt-4 font-light">
+                🕊️ In loving memory of the Bride's late father: <strong>Nestor Catague</strong></p></div></div><!-- Principal Sponsors --><div><h4 class="font-serif-elegant text-2xl font-light text-center text-[#6B1D2F]">Principal Sponsors</h4><div class="sponsors-heading-rule" aria-hidden="true"></div><div id="sponsors-orbit" class="sponsors-orbit"><div class="sponsors-orbit-aura" aria-hidden="true"></div><div id="sponsors-orbit-stage" class="sponsors-orbit-stage" role="list" aria-label="Principal sponsors, orbiting projection"><span class="sponsor-orbit-item" role="listitem">MR. CHRISTIAN ABONG SR.</span><span class="sponsor-orbit-item" role="listitem">DR. IVY ABOY</span><span class="sponsor-orbit-item" role="listitem">DR. ARJAY ALVARADO</span><span class="sponsor-orbit-item" role="listitem">MRS. ANN ARZAGA</span><span class="sponsor-orbit-item" role="listitem">MRS. LESLIE ARZAGA</span><span class="sponsor-orbit-item" role="listitem">DR. JOE BASANTA</span><span class="sponsor-orbit-item" role="listitem">ATTY. RYAN BONGHANOY</span><span class="sponsor-orbit-item" role="listitem">MR. REGULUS BRILLANTES</span><span class="sponsor-orbit-item" role="listitem">MS. PRECIOUS JANE CAÑAL, MPA</span><span class="sponsor-orbit-item" role="listitem">MRS. GINA DATU</span><span class="sponsor-orbit-item" role="listitem">MRS. HONEYLET FAUSTORILLA</span><span class="sponsor-orbit-item" role="listitem">DR. RENANTE EGCAS</span><span class="sponsor-orbit-item" role="listitem">HON. JEFFREY FERRER</span><span class="sponsor-orbit-item" role="listitem">DR. MOFE GANTES</span><span class="sponsor-orbit-item" role="listitem">DR. JOSE LIZAEL LAMPINEZ</span><span class="sponsor-orbit-item" role="listitem">DR. SAMSON LAUSA</span><span class="sponsor-orbit-item" role="listitem">DR. ADYBIER LOBATON</span><span class="sponsor-orbit-item" role="listitem">MRS. ANGELIE MAHILUM</span><span class="sponsor-orbit-item" role="listitem">MRS. ZARANITA MALABOR</span><span class="sponsor-orbit-item" role="listitem">DR. AIREEN JANE MARTORILLAS</span><span class="sponsor-orbit-item" role="listitem">MRS. ELLEN MAURICIO</span><span class="sponsor-orbit-item" role="listitem">MRS. RIZA PALACIOS</span><span class="sponsor-orbit-item" role="listitem">MR. DOROTEO RECUELO</span><span class="sponsor-orbit-item" role="listitem">MR. TRISTAN TUGOT</span><span class="sponsor-orbit-item" role="listitem">MRS. ARLENE VISITACION</span></div></div><p class="sponsors-orbit-hint hidden-on-export"><span class="sponsors-orbit-hint-dot" aria-hidden="true"></span>Names drift in gentle orbit &mdash; drag to turn</p><div class="text-center mt-4 hidden-on-export"><button type="button" id="sponsors-list-btn" aria-expanded="false" aria-controls="sponsors-list" class="sponsors-list-btn">View all 25 names</button></div><ul id="sponsors-list" class="sponsors-list" hidden></ul></div><!-- Tab 2: Main Entourage --><div id="tab-content-entourage-main" class="tab-panel hidden space-y-12 transition-opacity duration-300"><div class="grid md:grid-cols-2 gap-10"><!-- Best Man & Groom's Men --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Groom's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Best Man</p><p class="text-sm font-bold text-[#2C302E]">MR. HANNS VINZENZ GANTES</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Groomsmen</p><ul id="groomsmen-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MR. Nick Butch Bustillo</li><li>• MR. Loui Jay Guacen</li><li>• MR. Renz Beaver Layco</li><li>• MR. Jose Louie Bañadera</li><li>• MR. Carmelo Lobaton</li><li>• MR. Jules Emmanuel Malabor</li><li>• MR. Bruce De Ocampo</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Groomsman</p><p class="text-sm font-semibold text-[#2C302E]">Cynereck Ayco</p></div></div></div><!-- Bride's Side --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Bride's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Man of Honor</p><p class="text-sm font-bold text-[#2C302E]">MR. Moises Bolanio</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Bridesmaids</p><ul id="bridesmaids-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MS. Raiza Muriel Pineda</li><li>• MS. Sophia Ysabel Lee</li><li>• MS. Jannielle Mei Balino</li><li>• MS. Hilary Shane Sanding</li><li>• MS. Reylyn Marie Tuna</li><li>• MS. Abby Peñacuba</li><li>• MS. Coleen Torregue</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Bridesmaid</p><p class="text-sm font-semibold text-[#2C302E]">Ma. Amelia Reene Delos Reyes</p></div></div></div></div></div><!-- Tab 3: Secondary Sponsors --><div id="tab-content-secondary" class="tab-panel hidden space-y-8 transition-opacity duration-300"><div class="grid md:grid-cols-3 gap-6"><!-- Veil, Cord, Candle --><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Veil Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Petrex Saan</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Renalyn Saan</p><p class="text-xs text-gray-400">To clothe the couple in harmony and unity</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Cord Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Adrian Tianero</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Ranjelie Charizz Tianero</p><p class="text-xs text-gray-400">To bind the couple in marriage bond and loyalty</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Candle Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Junjo Brian Ybarrita</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Lyra Ybarrita</p><p class="text-xs text-gray-400">To light their path and guide their home</p></div></div><div class="grid md:grid-cols-2 gap-6 mt-8"><!-- Bearers --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Honorary Bearers</h5><div class="grid grid-cols-3 gap-4"><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Coin Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Jose Ramon Arzaga</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Bible Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Castiel John Saan</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Ring Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Marcus Khiel Belarmino</p></div></div></div><!-- Flower Girls --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Flower Girls</h5><div id="flowergirls-grid" class="grid grid-cols-2 gap-4"><div><p class="text-sm font-semibold text-[#2C302E]">Astrid Elizabeth Danielle Ybarrita</p><span class="text-[10px] text-gray-400">Flower Girl</span></div><div><p class="text-sm font-semibold text-[#2C302E]">Mary Belle Catague</p><span class="text-[10px] text-gray-400">Flower Girl</span></div></div></div></div></div></div></section><section id="attire" class="bg-white py-24 px-6 border-y border-[#D4AF37]/10"><div class="max-w-6xl mx-auto"><div class="text-center mb-12"><p class="text-xs uppercase tracking-[0.25em] font-semibold text-[#3D5333] mb-2">Style Guidelines</p><h2 class="font-serif-elegant text-4xl md:text-5xl font-light tracking-wide text-[#6B1D2F]">Dress Code &amp; Colors</h2><div class="w-12 h-px bg-[#D4AF37] mx-auto mt-4"></div><p class="text-sm text-[#2C302E]/70 max-w-lg mx-auto mt-4 font-light">
             We kindly ask our honored guests to dress in our elegant color palette to create beautiful, cohesive wedding memories.
           </p></div><!-- Interactive Role Selection Pills --><div class="flex flex-wrap justify-center gap-2 mb-12 max-w-3xl mx-auto"><button id="attire-btn-guest" class="attire-role-btn px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest transition-all duration-300 cursor-pointer shadow-md bg-transparent border border-[#D4AF37]/30 text-[#3D5333] hover:bg-transparent">
             General Guest
@@ -899,19 +1025,8 @@
 
       // Helper function to render arrays both onto the web page tabs and the personalizer inputs
       function renderDynamicLists() {
-        // 1. Render Principal Sponsors Grid (Tab 1)
-        const sponsorsGrid = document.getElementById("sponsors-grid");
-        sponsorsGrid.innerHTML = "";
-        sponsorsList.forEach(name => {
-          sponsorsGrid.innerHTML += `
-            <div class="sponsor-card" role="listitem" aria-label="${name}, Principal Sponsor">
-              <p>${name}</p>
-            </div>
-          `;
-        });
-        const sc = document.getElementById("sponsors-count");
-        if (sc) sc.textContent = sponsorsList.length;
-        setupSponsorsToggle();
+        // 1. Render Principal Sponsors (Tab 1) — 3D orbiting name projection
+        renderSponsorsOrbit();
 
         // 2. Render Groomsmen (Tab 2)
         const groomsmenUl = document.getElementById("groomsmen-list");
@@ -946,59 +1061,248 @@
         renderDrawerInputs("flowergirls", flowergirlsList, "drawer-flowergirls-list", "Flower Girl");
       }
 
-      // Mobile-first collapse for the Principal Sponsors grid: on phones only the
-      // first 8 sponsors show, with a "Show all" pill to expand. Desktop/tablet
-      // always shows the full list (grid is 2–3 columns there, so no long scroll).
-      let sponsorsExpanded = false;
-      let sponsorsResizeBound = false;
-      let sponsorsActiveApply = null;
-      function setupSponsorsToggle() {
-        const grid = document.getElementById("sponsors-grid");
-        const btn = document.getElementById("sponsors-toggle");
-        if (!grid || !btn) return;
-        const preview = 8;
-        const cards = grid.querySelectorAll(".sponsor-card");
-        const countEl = document.getElementById("sponsors-count");
-        if (countEl) countEl.textContent = cards.length;
+      // ------------------------------------------------------------------
+      // Principal Sponsors — premium 3D circular name projection
+      // Names orbit an invisible elliptical ring. Depth is expressed purely
+      // through perspective scale, glow and opacity — no blocks, no cubes.
+      // ------------------------------------------------------------------
+      let sponsorsOrbitItems = [];
+      let sponsorsOrbitAngle = 0;
+      let sponsorsOrbitRaf = 0;
+      let sponsorsOrbitLast = 0;
+      let sponsorsOrbitPaused = false;
+      let sponsorsOrbitDragging = false;
+      let sponsorsOrbitVelocity = 0;
+      let sponsorsOrbitOnScreen = true;
+      let sponsorsOrbitDragBound = false;
+      let sponsorsOrbitVisibilityBound = false;
+      let sponsorsListToggleBound = false;
+      let sponsorsOrbitGeom = { r: 150, cosT: 0.5, sinT: 0.87, p: 640, lift: 11, fit: 1, focus: 20 };
+      let sponsorsOrbitHeroIndex = -1;
+      const SPONSORS_ORBIT_SPEED = 0.16; // rad/s → ~39s per revolution
 
-        if (cards.length <= preview) {
-          btn.style.display = "none";
-          sponsorsActiveApply = null;
+      function escapeSponsorText(value) {
+        return String(value).replace(/[&<>"']/g, (c) => (
+          { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+        ));
+      }
+
+      function prefersReducedMotion() {
+        return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      }
+
+      function renderSponsorsOrbit() {
+        const stage = document.getElementById("sponsors-orbit-stage");
+        if (!stage) return;
+        stage.classList.add("is-live");
+        stage.innerHTML = sponsorsList
+          .map((name) => `<span class="sponsor-orbit-item" role="listitem">${escapeSponsorText(name)}</span>`)
+          .join("");
+        sponsorsOrbitItems = Array.prototype.slice.call(stage.querySelectorAll(".sponsor-orbit-item"));
+
+        const plainList = document.getElementById("sponsors-list");
+        if (plainList) plainList.innerHTML = sponsorsList.map((n) => `<li>${escapeSponsorText(n)}</li>`).join("");
+        const listBtn = document.getElementById("sponsors-list-btn");
+        if (listBtn && listBtn.getAttribute("aria-expanded") !== "true") {
+          listBtn.textContent = "View all " + sponsorsList.length + " names";
+        }
+
+        measureSponsorsOrbit();
+        bindSponsorsListToggle();
+        bindSponsorsOrbitDrag(stage);
+        bindSponsorsOrbitVisibility(stage);
+        startSponsorsOrbit();
+      }
+
+      function measureSponsorsOrbit() {
+        const stage = document.getElementById("sponsors-orbit-stage");
+        if (!stage) return;
+        const width = stage.clientWidth || 320;
+        const r = Math.max(96, Math.min(width * 0.42, 240));
+        const tilt = (60 * Math.PI) / 180;
+        const cosT = Math.cos(tilt);
+        const sinT = Math.sin(tilt);
+        // Perspective constant scales with the stage so phone and desktop share
+        // the same feel; focus sigma keeps one name legible while the rest recede.
+        const p = width < 480 ? 640 : 900;
+        // Parallax pushes the near arc further out than the far arc sits in,
+        // so lift the whole ring to keep it optically centred in the chamber.
+        const lift = (r * r * cosT * sinT * p) / (p * p - r * r * sinT * sinT);
+        // Auto-fit: the longest name (scaled up at the front) must stay inside
+        // the opaque centre of the edge-fade mask at every viewport width.
+        let widest = 0;
+        for (let i = 0; i < sponsorsOrbitItems.length; i++) {
+          widest = Math.max(widest, sponsorsOrbitItems[i].offsetWidth || 0);
+        }
+        const frontScale = p / (p - r * sinT);
+        // keep a hair inside the mask's fully-opaque plateau (8%..92%) so
+        // sub-pixel rounding can never nibble the ends of the longest name
+        const opaque = width * 0.82;
+        const fit = widest > 0 ? Math.min(1, opaque / (widest * frontScale)) : 1;
+        sponsorsOrbitGeom = {
+          r,
+          cosT,
+          sinT,
+          p,
+          lift,
+          fit,
+          focus: Math.max(18, width * 0.065),
+        };
+        // When the loop is not running (reduced motion) keep the ring in place.
+        if (!sponsorsOrbitRaf) positionSponsorsOrbit();
+      }
+
+      function positionSponsorsOrbit() {
+        const n = sponsorsOrbitItems.length;
+        if (!n) return;
+        const { r, cosT, sinT, p, lift, fit, focus } = sponsorsOrbitGeom;
+        const step = (Math.PI * 2) / n;
+        const invFocus2 = 1 / (focus * focus);
+        let hero = -1;
+        let heroDist = Infinity;
+        for (let i = 0; i < n; i++) {
+          const a = sponsorsOrbitAngle + i * step;
+          const ca = Math.cos(a);
+          const z = r * ca * sinT;
+          // manual perspective: scale the plane and push it out from the centre
+          const s = p / (p - z);
+          const X = r * Math.sin(a) * s;
+          const Y = r * ca * cosT * s - lift;
+          const el = sponsorsOrbitItems[i];
+          const depth = (ca + 1) / 2; // 0 = far side, 1 = nearest the viewer
+          const d2 = X * X;
+          // gate the spotlight on depth: only the near arc can light up, so the
+          // names directly behind stay dim instead of flaring through the centre
+          const spot = Math.exp(-d2 * invFocus2) * depth;
+          // depth floor keeps the ring readable; spotlight makes the name that
+          // is crossing the centre the unambiguous hero.
+          const o = Math.min(1, 0.1 + 0.22 * depth + 0.68 * spot);
+          if (d2 < heroDist) { heroDist = d2; hero = i; }
+          el.style.transform = `translate(-50%, -50%) translate(${X.toFixed(1)}px, ${Y.toFixed(1)}px) scale(${(s * fit).toFixed(4)})`;
+          el.style.opacity = o.toFixed(3);
+          el.style.zIndex = String(Math.round(z) + 4000);
+        }
+        for (let i = 0; i < n; i++) {
+          sponsorsOrbitItems[i].classList.toggle("is-front", i === hero);
+        }
+        sponsorsOrbitHeroIndex = hero;
+      }
+
+      function startSponsorsOrbit() {
+        if (prefersReducedMotion()) {
+          sponsorsOrbitAngle = -0.5;
+          positionSponsorsOrbit();
           return;
         }
+        if (!sponsorsOrbitRaf) {
+          sponsorsOrbitLast = 0;
+          sponsorsOrbitRaf = requestAnimationFrame(sponsorsOrbitFrame);
+        }
+      }
 
-        const isMobile = () => window.matchMedia("(max-width: 767px)").matches;
-        function apply() {
-          if (!isMobile()) {
-            cards.forEach(c => c.classList.remove("sponsor-hidden"));
-            btn.style.display = "none";
-            btn.setAttribute("aria-expanded", "true");
-            return;
+      function sponsorsOrbitFrame(ts) {
+        sponsorsOrbitRaf = 0;
+        if (!sponsorsOrbitLast) sponsorsOrbitLast = ts;
+        let dt = (ts - sponsorsOrbitLast) / 1000;
+        sponsorsOrbitLast = ts;
+        if (dt > 0.1) dt = 0.1;
+
+        const stage = document.getElementById("sponsors-orbit-stage");
+        if (stage && stage.clientWidth) {
+          const frozen = document.body.classList.contains("export-mode");
+          const canAuto = !frozen && !sponsorsOrbitPaused && !sponsorsOrbitDragging && !document.hidden && sponsorsOrbitOnScreen;
+          if (canAuto) sponsorsOrbitAngle += SPONSORS_ORBIT_SPEED * dt;
+          if (!sponsorsOrbitDragging && sponsorsOrbitVelocity) {
+            sponsorsOrbitAngle += sponsorsOrbitVelocity * dt;
+            sponsorsOrbitVelocity *= Math.pow(0.08, dt);
+            if (Math.abs(sponsorsOrbitVelocity) < 0.02) sponsorsOrbitVelocity = 0;
           }
-          btn.style.display = "";
-          if (sponsorsExpanded) return;
-          cards.forEach((c, i) => c.classList.toggle("sponsor-hidden", i >= preview));
-          btn.textContent = "Show all " + cards.length + " sponsors";
-          btn.setAttribute("aria-expanded", "false");
+          positionSponsorsOrbit();
         }
-        btn.onclick = () => {
-          sponsorsExpanded = !sponsorsExpanded;
-          if (sponsorsExpanded) {
-            cards.forEach(c => c.classList.remove("sponsor-hidden"));
-            btn.textContent = "Show less";
-            btn.setAttribute("aria-expanded", "true");
-          } else {
-            apply();
-          }
+        sponsorsOrbitRaf = requestAnimationFrame(sponsorsOrbitFrame);
+      }
+
+      function bindSponsorsOrbitVisibility(stage) {
+        if (sponsorsOrbitVisibilityBound) return;
+        sponsorsOrbitVisibilityBound = true;
+        if ("ResizeObserver" in window) {
+          try { new ResizeObserver(() => measureSponsorsOrbit()).observe(stage); } catch (e) {}
+        } else {
+          window.addEventListener("resize", measureSponsorsOrbit, { passive: true });
+        }
+        if ("IntersectionObserver" in window) {
+          try {
+            const io = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => { sponsorsOrbitOnScreen = entry.isIntersecting; });
+            }, { threshold: 0.01 });
+            io.observe(stage);
+          } catch (e) {}
+        }
+      }
+
+      function bindSponsorsOrbitDrag(stage) {
+        if (sponsorsOrbitDragBound) return;
+        sponsorsOrbitDragBound = true;
+        let startX = 0;
+        let startAngle = 0;
+        let lastT = 0;
+        let lastAngle = 0;
+
+        stage.addEventListener("pointerdown", (e) => {
+          if (prefersReducedMotion()) return;
+          sponsorsOrbitDragging = true;
+          sponsorsOrbitPaused = false;
+          sponsorsOrbitVelocity = 0;
+          stage.classList.add("is-dragging");
+          startX = e.clientX;
+          startAngle = sponsorsOrbitAngle;
+          lastT = performance.now();
+          lastAngle = sponsorsOrbitAngle;
+          if (stage.setPointerCapture) { try { stage.setPointerCapture(e.pointerId); } catch (err) {} }
+        });
+
+        stage.addEventListener("pointermove", (e) => {
+          if (!sponsorsOrbitDragging) return;
+          const target = startAngle + (e.clientX - startX) * 0.011;
+          const now = performance.now();
+          const ddt = Math.max(8, now - lastT) / 1000;
+          sponsorsOrbitVelocity = Math.max(-6, Math.min(6, (target - lastAngle) / ddt));
+          lastT = now;
+          lastAngle = target;
+          sponsorsOrbitAngle = target;
+          positionSponsorsOrbit();
+        });
+
+        const endDrag = () => {
+          if (!sponsorsOrbitDragging) return;
+          sponsorsOrbitDragging = false;
+          stage.classList.remove("is-dragging");
         };
-        sponsorsActiveApply = apply;
-        if (!sponsorsResizeBound) {
-          // Re-render replaces the cards, so the listener must call whichever
-          // apply() was built most recently — not a stale closure.
-          window.addEventListener("resize", () => { if (sponsorsActiveApply) sponsorsActiveApply(); }, { passive: true });
-          sponsorsResizeBound = true;
+        stage.addEventListener("pointerup", endDrag);
+        stage.addEventListener("pointercancel", endDrag);
+        stage.addEventListener("pointerleave", endDrag);
+
+        // Pause only on true hover devices, so a tap never freezes the ring.
+        if (window.matchMedia && window.matchMedia("(hover: hover)").matches) {
+          stage.addEventListener("mouseenter", () => { sponsorsOrbitPaused = true; });
+          stage.addEventListener("mouseleave", () => { sponsorsOrbitPaused = false; });
+          window.addEventListener("blur", () => { sponsorsOrbitPaused = false; });
         }
-        apply();
+      }
+
+      function bindSponsorsListToggle() {
+        if (sponsorsListToggleBound) return;
+        const btn = document.getElementById("sponsors-list-btn");
+        const list = document.getElementById("sponsors-list");
+        if (!btn || !list) return;
+        sponsorsListToggleBound = true;
+        btn.addEventListener("click", () => {
+          const willOpen = list.hasAttribute("hidden");
+          if (willOpen) list.removeAttribute("hidden");
+          else list.setAttribute("hidden", "");
+          btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+          btn.textContent = willOpen ? "Hide names" : "View all " + sponsorsList.length + " names";
+        });
       }
 
       function renderDrawerInputs(type, array, containerId, labelPrefix) {
@@ -1060,13 +1364,19 @@
         else if (type === "flowergirls") flowergirlsList[index] = value;
         
         // Render lists to web sections dynamically
-        const sponsorsGrid = document.getElementById("sponsors-grid");
         const groomsmenUl = document.getElementById("groomsmen-list");
         const bridesmaidsUl = document.getElementById("bridesmaids-list");
         const flowergirlsGrid = document.getElementById("flowergirls-grid");
 
         if (type === "sponsors") {
-          sponsorsGrid.children[index].querySelector("p").innerText = value || "Sponsor";
+          // Update in place so the live orbit keeps its motion (no rebuild).
+          const orbitItem = sponsorsOrbitItems[index];
+          if (orbitItem) orbitItem.textContent = value || "Sponsor";
+          const plainList = document.getElementById("sponsors-list");
+          if (plainList && plainList.children[index]) plainList.children[index].textContent = value || "Sponsor";
+          // a longer name changes the widest-name auto-fit, so re-measure;
+          // the running loop simply picks up the new geometry next frame
+          measureSponsorsOrbit();
         } else if (type === "groomsmen") {
           groomsmenUl.children[index].innerText = `• ${value || "Groomsman"}`;
         } else if (type === "bridesmaids") {
