@@ -609,6 +609,66 @@
       .tab-panel.hidden,
       #audio-visualizer.hidden { display: none; }
 
+      /* ------------------------------------------------------------------
+         Principal Sponsors — premium, mobile-first presentation
+         ------------------------------------------------------------------ */
+      .sponsors-heading-rule {
+        width: 44px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        margin: 12px auto 18px;
+      }
+      .sponsor-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 58px;
+        padding: 12px 8px;
+        background: linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
+        border: 1px solid rgba(212, 175, 55, 0.28);
+        border-radius: 14px;
+        box-shadow: 0 1px 2px rgba(44, 48, 46, 0.04);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+      .sponsor-card::before {
+        /* small gold lozenge sitting on the top edge */
+        content: "";
+        position: absolute;
+        top: -3px;
+        left: 50%;
+        width: 6px;
+        height: 6px;
+        margin-left: -3px;
+        background: #d4af37;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        opacity: 0.9;
+      }
+      .sponsor-card p {
+        font-family: 'Playfair Display', serif;
+        font-size: 12.5px;
+        line-height: 1.3;
+        letter-spacing: 0.02em;
+        color: #2c302e;
+        text-wrap: balance;
+      }
+      .sponsor-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(212, 175, 55, 0.75);
+        box-shadow: 0 10px 22px -16px rgba(107, 29, 47, 0.55);
+      }
+      @media (min-width: 640px) {
+        .sponsor-card { min-height: 68px; padding: 16px 12px; border-radius: 16px; }
+        .sponsor-card p { font-size: 14px; }
+      }
+      .sponsor-hidden { display: none !important; }
+      #sponsors-toggle {
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      }
+      #sponsors-toggle:active { transform: translateY(1px); }
+
       /* Fallback for browsers without :has() so overscroll is beige, not black */
       html.is-open { background: #f9f6f0; }
 
@@ -707,7 +767,7 @@
         </button><button type="button" id="tab-btn-secondary" class="tab-btn px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest bg-white border border-[#D4AF37]/30 text-[#3D5333] hover:bg-[#3D5333]/5 transition-all cursor-pointer">
           Secondary Sponsors
         </button></div><!-- Tab Content Area --><div class="bg-white border border-[#D4AF37]/20 rounded-3xl p-8 md:p-12 shadow-sm shadow-[#D4AF37]/5 min-h-[400px]"><!-- Tab 1: Parents & Sponsors --><div id="tab-content-parents" class="tab-panel space-y-12 transition-opacity duration-300"><div class="grid md:grid-cols-2 gap-10"><!-- Parents of the Groom --><div class="border border-[#D4AF37]/15 p-6 rounded-xl bg-[#3D5333]/5"><h4 class="font-serif-elegant text-lg italic text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-4 font-semibold">Parents of the Groom</h4><p class="text-sm font-semibold text-[#2C302E]">Mr. Renante Delos Reyes</p><p class="text-xs text-[#2C302E]/60 mb-3">Father of the Groom</p><p class="text-sm font-semibold text-[#2C302E]">Mrs. Ma. Christina Delos Reyes</p><p class="text-xs text-[#2C302E]/60">Mother of the Groom</p></div><!-- Parents of the Bride --><div class="border border-[#D4AF37]/15 p-6 rounded-xl bg-[#3D5333]/5"><h4 class="font-serif-elegant text-lg italic text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-4 font-semibold">Parents of the Bride</h4><p class="text-sm font-semibold text-[#2C302E]">Mr. Rene Sibug</p><p class="text-xs text-[#2C302E]/60 mb-3">Uncle of the Bride</p><p class="text-sm font-semibold text-[#2C302E]">Mrs. Emelita Catague</p><p class="text-xs text-[#2C302E]/60 mb-4">Mother of the Bride</p><p class="text-[10px] italic text-[#6B1D2F] bg-[#6B1D2F]/5 px-3 py-2 rounded">
-                🕊️ In loving memory of the Bride's late father: <strong>Nestor Catague</strong></p></div></div><!-- Principal Sponsors --><div><h4 class="font-serif-elegant text-2xl font-light text-center text-[#6B1D2F] mb-6">Principal Sponsors</h4><div id="sponsors-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-center"><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MR. CHRISTIAN ABONG SR.</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. IVY ABOY</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. ARJAY ALVARADO</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. ANN ARZAGA</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. LESLIE ARZAGA</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. JOE BASANTA</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">ATTY. RYAN BONGHANOY</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MR. REGULUS BRILLANTES</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MS. PRECIOUS JANE CAÑAL, MPA</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. GINA DATU</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. HONEYLET FAUSTORILLA</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. RENANTE EGCAS</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">HON. JEFFREY FERRER</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. MOFE GANTES</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. JOSE LIZAEL LAMPINEZ</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. SAMSON LAUSA</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. ADYBIER LOBATON</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. ANGELIE MAHILUM</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. ZARANITA MALABOR</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">DR. AIREEN JANE MARTORILLAS</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. ELLEN MAURICIO</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. RIZA PALACIOS</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MR. DOROTEO RECUELO</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MR. TRISTAN TUGOT</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div><div class="bg-gray-50 p-4 rounded-xl border border-gray-100"><p class="text-sm font-semibold text-[#2C302E]">MRS. ARLENE VISITACION</p><span class="text-[10px] text-gray-400">Principal Sponsor</span></div></div></div></div><!-- Tab 2: Main Entourage --><div id="tab-content-entourage-main" class="tab-panel hidden space-y-12 transition-opacity duration-300"><div class="grid md:grid-cols-2 gap-10"><!-- Best Man & Groom's Men --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Groom's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Best Man</p><p class="text-sm font-bold text-[#2C302E]">MR. HANNS VINZENZ GANTES</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Groomsmen</p><ul id="groomsmen-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MR. Nick Butch Bustillo</li><li>• MR. Loui Jay Guacen</li><li>• MR. Renz Beaver Layco</li><li>• MR. Jose Louie Bañadera</li><li>• MR. Carmelo Lobaton</li><li>• MR. Jules Emmanuel Malabor</li><li>• MR. Bruce De Ocampo</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Groomsman</p><p class="text-sm font-semibold text-[#2C302E]">Cynereck Ayco</p></div></div></div><!-- Bride's Side --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Bride's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Man of Honor</p><p class="text-sm font-bold text-[#2C302E]">MR. Moises Bolanio</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Bridesmaids</p><ul id="bridesmaids-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MS. Raiza Muriel Pineda</li><li>• MS. Sophia Ysabel Lee</li><li>• MS. Jannielle Mei Balino</li><li>• MS. Hilary Shane Sanding</li><li>• MS. Reylyn Marie Tuna</li><li>• MS. Abby Peñacuba</li><li>• MS. Coleen Torregue</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Bridesmaid</p><p class="text-sm font-semibold text-[#2C302E]">Ma. Amelia Reene Delos Reyes</p></div></div></div></div></div><!-- Tab 3: Secondary Sponsors --><div id="tab-content-secondary" class="tab-panel hidden space-y-8 transition-opacity duration-300"><div class="grid md:grid-cols-3 gap-6"><!-- Veil, Cord, Candle --><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Veil Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Petrex Saan</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Renalyn Saan</p><p class="text-xs text-gray-400">To clothe the couple in harmony and unity</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Cord Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Adrian Tianero</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Ranjelie Charizz Tianero</p><p class="text-xs text-gray-400">To bind the couple in marriage bond and loyalty</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Candle Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Junjo Brian Ybarrita</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Lyra Ybarrita</p><p class="text-xs text-gray-400">To light their path and guide their home</p></div></div><div class="grid md:grid-cols-2 gap-6 mt-8"><!-- Bearers --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Honorary Bearers</h5><div class="grid grid-cols-3 gap-4"><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Coin Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Jose Ramon Arzaga</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Bible Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Castiel John Saan</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Ring Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Marcus Khiel Belarmino</p></div></div></div><!-- Flower Girls --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Flower Girls</h5><div id="flowergirls-grid" class="grid grid-cols-2 gap-4"><div><p class="text-sm font-semibold text-[#2C302E]">Astrid Elizabeth Danielle Ybarrita</p><span class="text-[10px] text-gray-400">Flower Girl</span></div><div><p class="text-sm font-semibold text-[#2C302E]">Mary Belle Catague</p><span class="text-[10px] text-gray-400">Flower Girl</span></div></div></div></div></div></div></section><section id="attire" class="bg-white py-24 px-6 border-y border-[#D4AF37]/10"><div class="max-w-6xl mx-auto"><div class="text-center mb-12"><p class="text-xs uppercase tracking-[0.25em] font-semibold text-[#3D5333] mb-2">Style Guidelines</p><h2 class="font-serif-elegant text-4xl md:text-5xl font-light tracking-wide text-[#6B1D2F]">Dress Code &amp; Colors</h2><div class="w-12 h-px bg-[#D4AF37] mx-auto mt-4"></div><p class="text-sm text-[#2C302E]/70 max-w-lg mx-auto mt-4 font-light">
+                🕊️ In loving memory of the Bride's late father: <strong>Nestor Catague</strong></p></div></div><!-- Principal Sponsors --><div><h4 class="font-serif-elegant text-2xl font-light text-center text-[#6B1D2F]">Principal Sponsors</h4><div class="sponsors-heading-rule" aria-hidden="true"></div><div id="sponsors-grid" class="sponsors-grid grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 max-w-4xl mx-auto text-center" role="list"><div class="sponsor-card" role="listitem"><p>MR. CHRISTIAN ABONG SR.</p></div><div class="sponsor-card" role="listitem"><p>DR. IVY ABOY</p></div><div class="sponsor-card" role="listitem"><p>DR. ARJAY ALVARADO</p></div><div class="sponsor-card" role="listitem"><p>MRS. ANN ARZAGA</p></div><div class="sponsor-card" role="listitem"><p>MRS. LESLIE ARZAGA</p></div><div class="sponsor-card" role="listitem"><p>DR. JOE BASANTA</p></div><div class="sponsor-card" role="listitem"><p>ATTY. RYAN BONGHANOY</p></div><div class="sponsor-card" role="listitem"><p>MR. REGULUS BRILLANTES</p></div><div class="sponsor-card" role="listitem"><p>MS. PRECIOUS JANE CAÑAL, MPA</p></div><div class="sponsor-card" role="listitem"><p>MRS. GINA DATU</p></div><div class="sponsor-card" role="listitem"><p>MRS. HONEYLET FAUSTORILLA</p></div><div class="sponsor-card" role="listitem"><p>DR. RENANTE EGCAS</p></div><div class="sponsor-card" role="listitem"><p>HON. JEFFREY FERRER</p></div><div class="sponsor-card" role="listitem"><p>DR. MOFE GANTES</p></div><div class="sponsor-card" role="listitem"><p>DR. JOSE LIZAEL LAMPINEZ</p></div><div class="sponsor-card" role="listitem"><p>DR. SAMSON LAUSA</p></div><div class="sponsor-card" role="listitem"><p>DR. ADYBIER LOBATON</p></div><div class="sponsor-card" role="listitem"><p>MRS. ANGELIE MAHILUM</p></div><div class="sponsor-card" role="listitem"><p>MRS. ZARANITA MALABOR</p></div><div class="sponsor-card" role="listitem"><p>DR. AIREEN JANE MARTORILLAS</p></div><div class="sponsor-card" role="listitem"><p>MRS. ELLEN MAURICIO</p></div><div class="sponsor-card" role="listitem"><p>MRS. RIZA PALACIOS</p></div><div class="sponsor-card" role="listitem"><p>MR. DOROTEO RECUELO</p></div><div class="sponsor-card" role="listitem"><p>MR. TRISTAN TUGOT</p></div><div class="sponsor-card" role="listitem"><p>MRS. ARLENE VISITACION</p></div></div><div class="text-center mt-3 sm:mt-4 md:hidden"><button type="button" id="sponsors-toggle" aria-expanded="false" class="text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-[#6B1D2F] border border-[#D4AF37]/40 px-5 py-2 rounded-full bg-white/90 cursor-pointer">Show all <span id="sponsors-count">25</span> sponsors</button></div></div></div><!-- Tab 2: Main Entourage --><div id="tab-content-entourage-main" class="tab-panel hidden space-y-12 transition-opacity duration-300"><div class="grid md:grid-cols-2 gap-10"><!-- Best Man & Groom's Men --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Groom's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Best Man</p><p class="text-sm font-bold text-[#2C302E]">MR. HANNS VINZENZ GANTES</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Groomsmen</p><ul id="groomsmen-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MR. Nick Butch Bustillo</li><li>• MR. Loui Jay Guacen</li><li>• MR. Renz Beaver Layco</li><li>• MR. Jose Louie Bañadera</li><li>• MR. Carmelo Lobaton</li><li>• MR. Jules Emmanuel Malabor</li><li>• MR. Bruce De Ocampo</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Groomsman</p><p class="text-sm font-semibold text-[#2C302E]">Cynereck Ayco</p></div></div></div><!-- Bride's Side --><div><h4 class="font-serif-elegant text-xl font-semibold text-[#6B1D2F] border-b border-[#D4AF37]/20 pb-2 mb-6">Bride's Side</h4><div class="space-y-4"><div class="bg-[#3D5333]/5 p-4 rounded-xl border-l-4 border-[#D4AF37]"><p class="text-xs text-[#D4AF37] uppercase tracking-widest font-bold">Man of Honor</p><p class="text-sm font-bold text-[#2C302E]">MR. Moises Bolanio</p></div><div><p class="text-xs text-[#3D5333] uppercase tracking-widest font-bold mb-2">Bridesmaids</p><ul id="bridesmaids-list" class="grid grid-cols-2 gap-2 text-sm text-[#2C302E]/85"><li>• MS. Raiza Muriel Pineda</li><li>• MS. Sophia Ysabel Lee</li><li>• MS. Jannielle Mei Balino</li><li>• MS. Hilary Shane Sanding</li><li>• MS. Reylyn Marie Tuna</li><li>• MS. Abby Peñacuba</li><li>• MS. Coleen Torregue</li></ul></div><div class="bg-gray-50 p-3 rounded-lg mt-3 border border-gray-100"><p class="text-xs text-gray-400 uppercase font-semibold">Junior Bridesmaid</p><p class="text-sm font-semibold text-[#2C302E]">Ma. Amelia Reene Delos Reyes</p></div></div></div></div></div><!-- Tab 3: Secondary Sponsors --><div id="tab-content-secondary" class="tab-panel hidden space-y-8 transition-opacity duration-300"><div class="grid md:grid-cols-3 gap-6"><!-- Veil, Cord, Candle --><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Veil Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Petrex Saan</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Renalyn Saan</p><p class="text-xs text-gray-400">To clothe the couple in harmony and unity</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Cord Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Adrian Tianero</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Ranjelie Charizz Tianero</p><p class="text-xs text-gray-400">To bind the couple in marriage bond and loyalty</p></div><div class="bg-gray-50 p-6 rounded-2xl border border-[#D4AF37]/15"><span class="text-xs text-[#D4AF37] font-bold uppercase tracking-wider block mb-1">Candle Sponsors</span><p class="text-sm font-bold text-[#2C302E]">Mr. Junjo Brian Ybarrita</p><p class="text-sm font-bold text-[#2C302E] mb-3">Mrs. Lyra Ybarrita</p><p class="text-xs text-gray-400">To light their path and guide their home</p></div></div><div class="grid md:grid-cols-2 gap-6 mt-8"><!-- Bearers --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Honorary Bearers</h5><div class="grid grid-cols-3 gap-4"><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Coin Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Jose Ramon Arzaga</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Bible Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Castiel John Saan</p></div><div><p class="text-xs text-[#D4AF37] uppercase font-bold">Ring Bearer</p><p class="text-sm font-semibold text-[#2C302E]">Marcus Khiel Belarmino</p></div></div></div><!-- Flower Girls --><div class="border border-[#D4AF37]/15 p-6 rounded-2xl bg-[#3D5333]/5"><h5 class="font-serif-elegant text-lg font-bold text-[#6B1D2F] mb-4">Flower Girls</h5><div id="flowergirls-grid" class="grid grid-cols-2 gap-4"><div><p class="text-sm font-semibold text-[#2C302E]">Astrid Elizabeth Danielle Ybarrita</p><span class="text-[10px] text-gray-400">Flower Girl</span></div><div><p class="text-sm font-semibold text-[#2C302E]">Mary Belle Catague</p><span class="text-[10px] text-gray-400">Flower Girl</span></div></div></div></div></div></div></section><section id="attire" class="bg-white py-24 px-6 border-y border-[#D4AF37]/10"><div class="max-w-6xl mx-auto"><div class="text-center mb-12"><p class="text-xs uppercase tracking-[0.25em] font-semibold text-[#3D5333] mb-2">Style Guidelines</p><h2 class="font-serif-elegant text-4xl md:text-5xl font-light tracking-wide text-[#6B1D2F]">Dress Code &amp; Colors</h2><div class="w-12 h-px bg-[#D4AF37] mx-auto mt-4"></div><p class="text-sm text-[#2C302E]/70 max-w-lg mx-auto mt-4 font-light">
             We kindly ask our honored guests to dress in our elegant color palette to create beautiful, cohesive wedding memories.
           </p></div><!-- Interactive Role Selection Pills --><div class="flex flex-wrap justify-center gap-2 mb-12 max-w-3xl mx-auto"><button id="attire-btn-guest" class="attire-role-btn px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest transition-all duration-300 cursor-pointer shadow-md bg-transparent border border-[#D4AF37]/30 text-[#3D5333] hover:bg-transparent">
             General Guest
@@ -840,12 +900,14 @@
         sponsorsGrid.innerHTML = "";
         sponsorsList.forEach(name => {
           sponsorsGrid.innerHTML += `
-            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-              <p class="text-sm font-semibold text-[#2C302E]">${name}</p>
-              <span class="text-[10px] text-gray-400">Principal Sponsor</span>
+            <div class="sponsor-card" role="listitem" aria-label="${name}, Principal Sponsor">
+              <p>${name}</p>
             </div>
           `;
         });
+        const sc = document.getElementById("sponsors-count");
+        if (sc) sc.textContent = sponsorsList.length;
+        setupSponsorsToggle();
 
         // 2. Render Groomsmen (Tab 2)
         const groomsmenUl = document.getElementById("groomsmen-list");
@@ -878,6 +940,61 @@
         renderDrawerInputs("groomsmen", groomsmenList, "drawer-groomsmen-list", "Groomsman");
         renderDrawerInputs("bridesmaids", bridesmaidsList, "drawer-bridesmaids-list", "Bridesmaid");
         renderDrawerInputs("flowergirls", flowergirlsList, "drawer-flowergirls-list", "Flower Girl");
+      }
+
+      // Mobile-first collapse for the Principal Sponsors grid: on phones only the
+      // first 8 sponsors show, with a "Show all" pill to expand. Desktop/tablet
+      // always shows the full list (grid is 2–3 columns there, so no long scroll).
+      let sponsorsExpanded = false;
+      let sponsorsResizeBound = false;
+      let sponsorsActiveApply = null;
+      function setupSponsorsToggle() {
+        const grid = document.getElementById("sponsors-grid");
+        const btn = document.getElementById("sponsors-toggle");
+        if (!grid || !btn) return;
+        const preview = 8;
+        const cards = grid.querySelectorAll(".sponsor-card");
+        const countEl = document.getElementById("sponsors-count");
+        if (countEl) countEl.textContent = cards.length;
+
+        if (cards.length <= preview) {
+          btn.style.display = "none";
+          sponsorsActiveApply = null;
+          return;
+        }
+
+        const isMobile = () => window.matchMedia("(max-width: 767px)").matches;
+        function apply() {
+          if (!isMobile()) {
+            cards.forEach(c => c.classList.remove("sponsor-hidden"));
+            btn.style.display = "none";
+            btn.setAttribute("aria-expanded", "true");
+            return;
+          }
+          btn.style.display = "";
+          if (sponsorsExpanded) return;
+          cards.forEach((c, i) => c.classList.toggle("sponsor-hidden", i >= preview));
+          btn.textContent = "Show all " + cards.length + " sponsors";
+          btn.setAttribute("aria-expanded", "false");
+        }
+        btn.onclick = () => {
+          sponsorsExpanded = !sponsorsExpanded;
+          if (sponsorsExpanded) {
+            cards.forEach(c => c.classList.remove("sponsor-hidden"));
+            btn.textContent = "Show less";
+            btn.setAttribute("aria-expanded", "true");
+          } else {
+            apply();
+          }
+        };
+        sponsorsActiveApply = apply;
+        if (!sponsorsResizeBound) {
+          // Re-render replaces the cards, so the listener must call whichever
+          // apply() was built most recently — not a stale closure.
+          window.addEventListener("resize", () => { if (sponsorsActiveApply) sponsorsActiveApply(); }, { passive: true });
+          sponsorsResizeBound = true;
+        }
+        apply();
       }
 
       function renderDrawerInputs(type, array, containerId, labelPrefix) {
