@@ -1064,7 +1064,7 @@
               Thank you for submitting your RSVP. We are absolutely thrilled to celebrate this magical evening together with you!
             </p><button id="rsvp-edit-btn" type="button" class="text-xs font-semibold uppercase tracking-widest text-gray-400 hover:text-[#6B1D2F] transition-colors duration-300 cursor-pointer">
               Edit Submission
-            </button></div><!-- RSVP Form --><form id="rsvp-form" class="space-y-6"><div class="grid md:grid-cols-2 gap-6"><!-- Name Input --><div><label for="fullName" class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-2">Your Full Name</label><input type="text" id="fullName" required="" autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="e.g. Moises Bolanio" class="w-full px-4 py-3 rounded-xl border border-[#D4AF37]/40 focus:outline-none focus:border-[#6B1D2F] bg-[#F9F6F0] text-sm text-[#2C302E] transition-colors"></div><!-- Guest Email --><div><label for="email" class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-2">Email Address</label><input type="email" id="email" required="" autocomplete="email" inputmode="email" spellcheck="false" autocapitalize="off" placeholder="e.g. moises@example.com" class="w-full px-4 py-3 rounded-xl border border-[#D4AF37]/40 focus:outline-none focus:border-[#6B1D2F] bg-[#F9F6F0] text-sm text-[#2C302E] transition-colors"></div></div><!-- Attendance Choice --><div><span class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-3">Will You Be Attending?</span><div class="grid grid-cols-2 gap-4"><label class="rsvp-choice flex items-center justify-center gap-3 border border-[#D4AF37]/40 rounded-xl p-4 cursor-pointer hover:bg-[#3D5333]/5 transition-all duration-300"><input type="radio" name="attendance" value="attending" checked="" class="accent-[#6B1D2F] w-4 h-4"><span class="text-xs text-[#2C302E] font-semibold uppercase tracking-wider">Accepts with Joy</span></label><label class="rsvp-choice flex items-center justify-center gap-3 border border-[#D4AF37]/40 rounded-xl p-4 cursor-pointer hover:bg-[#3D5333]/5 transition-all duration-300"><input type="radio" name="attendance" value="declining" class="accent-[#6B1D2F] w-4 h-4"><span class="text-xs text-[#2C302E] font-semibold uppercase tracking-wider">Declines with Regret</span></label></div></div><!-- Interactive Meal Preference details (shown only if attending) --><div id="meal-preference-block" class="space-y-6 transition-all duration-300"><div class="grid md:grid-cols-2 gap-6"><!-- Reserved Seat (1 seat per invitation) --><div class="col-span-2"><span class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-2">Reserved Seat</span><p class="w-full px-4 py-3 rounded-xl border border-[#D4AF37]/40 bg-[#F9F6F0] text-sm text-[#2C302E]/75">This invitation reserves <strong class="text-[#6B1D2F] font-semibold">1 seat</strong> in your name.</p></div></div></div><!-- Submit Button --><button type="submit" class="w-full bg-[#6B1D2F] hover:bg-[#521322] text-white text-xs font-semibold uppercase tracking-widest py-4 rounded-xl transition-all duration-300 shadow-md shadow-[#6B1D2F]/10 cursor-pointer">
+            </button></div><!-- RSVP Form --><form id="rsvp-form" class="space-y-6"><div class="grid md:grid-cols-2 gap-6"><!-- Name Input --><div><label for="fullName" class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-2">Your Full Name</label><input type="text" id="fullName" required="" autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="e.g. Moises Bolanio" class="w-full px-4 py-3 rounded-xl border border-[#D4AF37]/40 focus:outline-none focus:border-[#6B1D2F] bg-[#F9F6F0] text-sm text-[#2C302E] transition-colors"></div><!-- Guest Email --><div><label for="email" class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-2">Email Address</label><input type="email" id="email" required="" autocomplete="email" inputmode="email" spellcheck="false" autocapitalize="off" placeholder="e.g. moises@example.com" class="w-full px-4 py-3 rounded-xl border border-[#D4AF37]/40 focus:outline-none focus:border-[#6B1D2F] bg-[#F9F6F0] text-sm text-[#2C302E] transition-colors"></div></div><!-- Attendance Choice --><div><span class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-3">Will You Be Attending?</span><div class="grid grid-cols-2 gap-4"><label class="rsvp-choice flex items-center justify-center gap-3 border border-[#D4AF37]/40 rounded-xl p-4 cursor-pointer hover:bg-[#3D5333]/5 transition-all duration-300"><input type="radio" name="attendance" value="attending" checked="" class="accent-[#6B1D2F] w-4 h-4"><span class="text-xs text-[#2C302E] font-semibold uppercase tracking-wider">Accepts with Joy</span></label><label class="rsvp-choice flex items-center justify-center gap-3 border border-[#D4AF37]/40 rounded-xl p-4 cursor-pointer hover:bg-[#3D5333]/5 transition-all duration-300"><input type="radio" name="attendance" value="declining" class="accent-[#6B1D2F] w-4 h-4"><span class="text-xs text-[#2C302E] font-semibold uppercase tracking-wider">Declines with Regret</span></label></div></div><!-- Interactive Meal Preference details (shown only if attending) --><div id="meal-preference-block" class="space-y-6 transition-all duration-300"><div class="grid md:grid-cols-2 gap-6"><!-- Guest Count --><div class="col-span-2"><label for="guests" class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-2">Number of Guests</label><select id="guests" class="w-full px-4 py-3 rounded-xl border border-[#D4AF37]/40 focus:outline-none focus:border-[#6B1D2F] bg-[#F9F6F0] text-sm text-[#2C302E] transition-colors"><option value="1">1 Guest (Myself Only)</option><option value="2">2 Guests (Myself + 1 Additional Guest)</option></select></div><!-- Second Guest Name --><div id="guest2-block" class="col-span-2" style="display:none;"><label for="guest2Name" class="block text-xs uppercase tracking-wider font-semibold text-[#3D5333] mb-2">Second Guest Full Name</label><input type="text" id="guest2Name" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="e.g. Maria Santos" class="w-full px-4 py-3 rounded-xl border border-[#D4AF37]/40 focus:outline-none focus:border-[#6B1D2F] bg-[#F9F6F0] text-sm text-[#2C302E] transition-colors"></div></div></div><!-- Submit Button --><button type="submit" class="w-full bg-[#6B1D2F] hover:bg-[#521322] text-white text-xs font-semibold uppercase tracking-widest py-4 rounded-xl transition-all duration-300 shadow-md shadow-[#6B1D2F]/10 cursor-pointer">
               Submit RSVP
             </button></form><div id="gift" class="mt-8 border-t border-[#D4AF37]/20 pt-8 text-center"><div class="max-w-md mx-auto"><div class="flex items-center justify-center gap-2 mb-3"><div class="w-8 h-px bg-[#D4AF37]/50"></div><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg><div class="w-8 h-px bg-[#D4AF37]/50"></div></div><p class="font-serif-elegant text-2xl text-[#6B1D2F] mb-3">A Gift From the Heart</p><p class="text-xs text-gray-500 leading-relaxed font-light mb-4">Your presence on our special day is the greatest blessing we could ever ask for. Should your heart wish to give us something more, we would be deeply touched — and would gently let you know that a <span class="font-semibold text-[#6B1D2F]">monetary gift</span> is something we would truly treasure. No need to worry about what to bring; your love and warm wishes are already more than enough. 💛</p><button type="button" id="gift-btn" class="bg-[#D4AF37] hover:bg-[#c49a2c] text-[#2C302E] text-xs font-semibold uppercase tracking-widest px-8 py-4 rounded-xl transition-all duration-300 shadow-md shadow-[#D4AF37]/25 cursor-pointer">View Gift Details</button></div></div></div></div></section></div><footer class="bg-[#2C302E] text-white py-16 px-6 text-center border-t border-[#D4AF37]/35"><div class="max-w-4xl mx-auto"><span class="font-serif-elegant text-4xl font-light tracking-widest text-[#D4AF37]">R &amp; I</span><div class="w-8 h-px bg-[#D4AF37]/40 mx-auto my-6"></div><p class="font-serif-elegant text-xl italic text-white/80 max-w-md mx-auto mb-8 font-light">
           "What therefore God hath joined together, let not man put asunder."
@@ -1779,10 +1779,10 @@
         },
         ninang: {
           title: "Principal Sponsor (Ninang)",
-          recommendation: "CREAM/BEIGE FILIPINIANA OR GOWN",
-          details: "Ninangs are invited to wear an elegant Cream or Warm Beige Filipiniana, modern terno, or a formal long gown with traditional accents.",
-          tip: "Soft champagne gold or cream jewelry completes this classic look beautifully.",
-          allowedColors: ["beige"]
+          recommendation: "CREAM/BEIGE OR OLIVE FILIPINIANA OR GOWN",
+          details: "Ninangs are invited to wear an elegant Cream, Warm Beige, or Olive Filipiniana, modern terno, or a formal long gown with traditional accents.",
+          tip: "Soft champagne gold, cream, or olive jewelry completes this classic look beautifully.",
+          allowedColors: ["beige", "olive"]
         },
         groomsmen: {
           title: "Main Groomsmen",
@@ -2238,10 +2238,19 @@
       });
 
       // RSVP: the meal/details block only applies when the guest is attending.
-      // Reservations are fixed at 1 seat per invitation, so there is no
-      // guest-count selector or second-guest field.
+      // Guests may RSVP for themselves or bring one additional guest.
       const mealBlock = document.getElementById("meal-preference-block");
       const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
+      const guestsSelect = document.getElementById("guests");
+      const guest2Block = document.getElementById("guest2-block");
+      const guest2Input = document.getElementById("guest2Name");
+
+      function syncGuestCountState() {
+        const checked = document.querySelector('input[name="attendance"]:checked');
+        const attending = !checked || checked.value !== "declining";
+        const bringingGuest = Boolean(attending && guestsSelect && guestsSelect.value === "2");
+        if (guest2Block) guest2Block.style.display = bringingGuest ? "block" : "none";
+      }
 
       function syncAttendanceState() {
         const checked = document.querySelector('input[name="attendance"]:checked');
@@ -2252,9 +2261,11 @@
           const label = radio.closest("label");
           if (label) label.classList.toggle("is-selected", radio.checked);
         });
+        syncGuestCountState();
       }
 
       attendanceRadios.forEach(radio => radio.addEventListener("change", syncAttendanceState));
+      if (guestsSelect) guestsSelect.addEventListener("change", syncGuestCountState);
 
       // RSVP Submission Form Handling
       const rsvpForm = document.getElementById("rsvp-form");
@@ -2338,9 +2349,13 @@
 
           const attendanceRadio = document.querySelector('input[name="attendance"]:checked');
           const attendance = attendanceRadio ? attendanceRadio.value : "attending";
-          // One seat is reserved per invitation — no additional-guest option.
-          const guests = "1";
-          const guest2Name = "";
+          const guests = attendance === "attending" && guestsSelect ? guestsSelect.value : "1";
+          const guest2Name = guests === "2" && guest2Input ? guest2Input.value.trim() : "";
+
+          if (guests === "2" && !guest2Name) {
+            showRsvpFeedback(true, "Please enter the full name of your additional guest.");
+            return;
+          }
           const submittedAt = new Date().toISOString();
           const submitBtn = rsvpForm.querySelector('button[type="submit"]');
           const originalLabel = submitBtn ? submitBtn.textContent : "";
@@ -2355,7 +2370,7 @@
             await saveRsvpEntry({ fullName, email: guestEmail, attendance, guests, guest2Name, submittedAt });
 
             const successMessage = attendance === "attending"
-              ? `Dearest <strong>${fullName}</strong>, your response has been saved! We're absolutely thrilled that <strong>yourself</strong> will join us to celebrate — we have reserved <strong>1 seat</strong> in your name. We'll keep you updated at <strong>${guestEmail}</strong>.`
+              ? `Dearest <strong>${fullName}</strong>, your response has been saved! We're absolutely thrilled that <strong>yourself</strong>${guests === "2" ? ` and <strong>${guest2Name}</strong>` : ""} will join us to celebrate — we have reserved <strong>${guests === "2" ? "2 seats" : "1 seat"}</strong> in your name. We'll keep you updated at <strong>${guestEmail}</strong>.`
               : `Dearest <strong>${fullName}</strong>, thank you for letting us know. We will deeply miss your presence, but we completely understand and send you our warmest love and wishes.`;
             try { sessionStorage.setItem("rsvp_success_message", successMessage); } catch (storageError) {}
             showRsvpFeedback(false, successMessage);
